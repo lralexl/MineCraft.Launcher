@@ -18,7 +18,6 @@ REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\splash.png
 REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\WizApp.exe
 REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\settings.txt
 REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\java_portable.txt
-REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\local.ver
 REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\minecraft.jar
 REM  QBFC Project Options End
 
@@ -35,6 +34,7 @@ if exist logenabled9514753 goto end
 
 :init
 if not exist "%cd%\settings.txt" goto generate
+if not exist .minecraft mkdir .minecraft
 
 :vars
 :: Import settings.txt and set variables
@@ -82,7 +82,6 @@ set !v83!
 :launcherupdate
 :: Self-updating feature for the launcher
 if exist Launcher.exe.old del /f /q Launcher.exe.old
-if exist local.ver del /f /q local.ver
 if not %launcherupdate% == 1 goto modsinstall
 start /wait %MYFILES%\wget.exe -Olauncher.ver http://dl.dropbox.com/u/18669020/Launcher/launcher.ver
 if not exist launcher.ver goto modsinstall
@@ -93,7 +92,6 @@ if %launcherver% == %localver% del /f /q launcher.ver
 if %launcherver% == %localver% goto modsinstall
 start /wait %MYFILES%\wget.exe -OLauncher.exe.update http://dl.dropbox.com/u/18669020/Launcher/Launcher.exe --no-check-certificate>CON
 if exist Launcher.exe.update rename Launcher.exe Launcher.exe.old
-if exist Launcher.exe.update copy /y launcher.ver local.ver
 if exist Launcher.exe.update move /y launcher.ver .minecraft\launcher.ver
 if exist Launcher.exe.update rename Launcher.exe.update Launcher.exe
 set watitle=Update Downloaded
@@ -107,7 +105,6 @@ if not %custommods% == 1 goto modpack
 if exist .minecraft\mods.list goto texturesinstall
 
 :: Folder structure and download/extract base file
-if not exist .minecraft mkdir .minecraft
 if not exist .minecraft\jarfolder mkdir .minecraft\jarfolder
 if not exist .minecraft\modzips mkdir .minecraft\modzips
 if not exist .minecraft\bin mkdir .minecraft\bin
@@ -116,17 +113,7 @@ start /wait %MYFILES%\7za.exe x -y -o.minecraft\bin %mcver%-base.7z
 del /f /q %mcver%-base.7z
 if not exist .minecraft\bin\minecraft-%mcver%.jar copy /y .minecraft\bin\minecraft.jar .minecraft\bin\minecraft-%mcver%.jar
 
-:: Download/extract mod zips if set to anything other than "none"
-if not %mod1% == none start /wait %MYFILES%\wget.exe -O".minecraft\modzips\%mod1%.zip" "http://dl.dropbox.com/u/18669020/Launcher/%mcver%-%mod1%.zip"
-if not %mod2% == none start /wait %MYFILES%\wget.exe -O".minecraft\modzips\%mod2%.zip" "http://dl.dropbox.com/u/18669020/Launcher/%mcver%-%mod2%.zip"
-if not %mod3% == none start /wait %MYFILES%\wget.exe -O".minecraft\modzips\%mod3%.zip" "http://dl.dropbox.com/u/18669020/Launcher/%mcver%-%mod3%.zip"
-if not %mod4% == none start /wait %MYFILES%\wget.exe -O".minecraft\modzips\%mod4%.zip" "http://dl.dropbox.com/u/18669020/Launcher/%mcver%-%mod4%.zip"
-if not %mod5% == none start /wait %MYFILES%\wget.exe -O".minecraft\modzips\%mod5%.zip" "http://dl.dropbox.com/u/18669020/Launcher/%mcver%-%mod5%.zip"
-if not %mod6% == none start /wait %MYFILES%\wget.exe -O".minecraft\modzips\%mod6%.zip" "http://dl.dropbox.com/u/18669020/Launcher/%mcver%-%mod6%.zip"
-if not %mod7% == none start /wait %MYFILES%\wget.exe -O".minecraft\modzips\%mod7%.zip" "http://dl.dropbox.com/u/18669020/Launcher/%mcver%-%mod7%.zip"
-if not %mod8% == none start /wait %MYFILES%\wget.exe -O".minecraft\modzips\%mod8%.zip" "http://dl.dropbox.com/u/18669020/Launcher/%mcver%-%mod8%.zip"
-if not %mod9% == none start /wait %MYFILES%\wget.exe -O".minecraft\modzips\%mod9%.zip" "http://dl.dropbox.com/u/18669020/Launcher/%mcver%-%mod9%.zip"
-if not %mod10% == none start /wait %MYFILES%\wget.exe -O".minecraft\modzips\%mod10%.zip" "http://dl.dropbox.com/u/18669020/Launcher/%mcver%-%mod10%.zip"
+:: Extract mod zips if set to anything other than "none"
 if not %mod1% == none start /wait %MYFILES%\7za.exe x -y -o".minecraft\modzips\%mod1%" ".minecraft\modzips\%mod1%.zip"
 if not %mod2% == none start /wait %MYFILES%\7za.exe x -y -o".minecraft\modzips\%mod2%" ".minecraft\modzips\%mod2%.zip"
 if not %mod3% == none start /wait %MYFILES%\7za.exe x -y -o".minecraft\modzips\%mod3%" ".minecraft\modzips\%mod3%.zip"
@@ -189,8 +176,8 @@ goto texturesinstall
 :: Install modpack if not installed but enabled
 if not %modpack% == 1 goto texturesupdate
 if exist .minecraft\mods.ver goto modsupdate
-start /wait %MYFILES%\wget.exe -O.minecraft\mods.ver http://dl.dropbox.com/u/18669020/Launcher/mods.ver --no-check-certificate
 start /wait %MYFILES%\wget.exe -O%mcver%-mods.7z http://dl.dropbox.com/u/18669020/Launcher/%mcver%-mods.7z --no-check-certificate>CON
+if exist %mcver%-mods.7z start /wait %MYFILES%\wget.exe -O.minecraft\mods.ver http://dl.dropbox.com/u/18669020/Launcher/mods.ver --no-check-certificate
 start /wait %MYFILES%\7za.exe x -y -o.minecraft %mcver%-mods.7z
 del /f /q %mcver%-mods.7z
 goto texturesupdate
@@ -249,7 +236,6 @@ goto end
 :: Import old MineCraft settings/configs
 if not %importold% == 1 goto init2
 if exist .minecraft\imported.txt goto init2
-if not exist .minecraft mkdir .minecraft
 copy /y "%appdata%\.minecraft\options.txt" .minecraft
 copy /y "%appdata%\.minecraft\optionsof.txt" .minecraft
 copy /y "%appdata%\.minecraft\servers.dat" .minecraft
@@ -327,29 +313,29 @@ if %nologin% == 1 goto nologin
 goto mcram
 
 :nologin
-%javap% -Xincgc -Xms%Xms%M -Xmx%Xmx%M -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=2 -XX:+AggressiveOpts -cp "%appdata%\.minecraft\bin\minecraft.jar";"%appdata%\.minecraft\bin\lwjgl.jar";"%appdata%\.minecraft\bin\lwjgl_util.jar";"%appdata%\.minecraft\bin\jinput.jar" -Djava.library.path="%appdata%\.minecraft\bin\natives" net.minecraft.client.Minecraft
+%javap% -Xms%Xms%M -Xmx%Xmx%M -cp "%appdata%\.minecraft\bin\minecraft.jar";"%appdata%\.minecraft\bin\lwjgl.jar";"%appdata%\.minecraft\bin\lwjgl_util.jar";"%appdata%\.minecraft\bin\jinput.jar" -Djava.library.path="%appdata%\.minecraft\bin\natives" net.minecraft.client.Minecraft
 if %ramdisk% == 1 goto ramclean
 
 :mc
 if %autologin% == 0 set user=
 if %autologin% == 0 set pass=
 if %autologin% == 0 set serverset=
-%javap% %proxyargs% -Xincgc -Xms%Xms%M -Xmx%Xmx%M -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=2 -XX:+AggressiveOpts -jar "%appdata%\.minecraft\minecraft.jar" %user% %pass% %serverset%
+%javap% %proxyargs% -Xms%Xms%M -Xmx%Xmx%M -jar "%appdata%\.minecraft\minecraft.jar" %user% %pass% %serverset%
 goto end
 
 :mcram
 if %autologin% == 0 set user=
 if %autologin% == 0 set pass=
 if %autologin% == 0 set serverset=
-%javap% %proxyargs% -Xincgc -Xms%Xms%M -Xmx%Xmx%M -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=2 -XX:+AggressiveOpts -jar "%appdata%\.minecraft\minecraft.jar" %user% %pass% %serverset%
+%javap% %proxyargs% -Xms%Xms%M -Xmx%Xmx%M -jar "%appdata%\.minecraft\minecraft.jar" %user% %pass% %serverset%
 
 :ramclean
-if not %persist% == 1 goto end
+if not %persist% == 1 goto ramdiskclean
 if not exist .minecraft mkdir .minecraft
 xcopy /e /q /h /r /y /i /c "%appdata%\.minecraft" .minecraft
 
 :ramdiskclean
-imdisk.exe -D -m %ramdrv%:
+"%windir%\system32\imdisk.exe" -D -m %ramdrv%:
 goto end
 
 :generate
