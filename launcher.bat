@@ -19,6 +19,7 @@ REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\WizApp.exe
 REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\settings.txt
 REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\java_portable.txt
 REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\minecraft.jar
+REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\launcher.ver
 REM  QBFC Project Options End
 
 :: written by RaLeX
