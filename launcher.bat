@@ -142,15 +142,15 @@ if not %mod10% == none start /wait %MYFILES%\7za.exe x -y -o".minecraft\modzips\
 start /wait %MYFILES%\7za.exe x -y -o.minecraft\jarfolder .\.minecraft\bin\minecraft.jar
 rmdir /s /q .minecraft\jarfolder\META-INF
 if not %mod1% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod1%\*" .minecraft\jarfolder
-if not %mod1% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod2%\*" .minecraft\jarfolder
-if not %mod1% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod3%\*" .minecraft\jarfolder
-if not %mod1% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod4%\*" .minecraft\jarfolder
-if not %mod1% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod5%\*" .minecraft\jarfolder
-if not %mod1% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod6%\*" .minecraft\jarfolder
-if not %mod1% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod7%\*" .minecraft\jarfolder
-if not %mod1% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod8%\*" .minecraft\jarfolder
-if not %mod1% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod9%\*" .minecraft\jarfolder
-if not %mod1% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod10%\*" .minecraft\jarfolder
+if not %mod2% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod2%\*" .minecraft\jarfolder
+if not %mod3% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod3%\*" .minecraft\jarfolder
+if not %mod4% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod4%\*" .minecraft\jarfolder
+if not %mod5% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod5%\*" .minecraft\jarfolder
+if not %mod6% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod6%\*" .minecraft\jarfolder
+if not %mod7% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod7%\*" .minecraft\jarfolder
+if not %mod8% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod8%\*" .minecraft\jarfolder
+if not %mod9% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod9%\*" .minecraft\jarfolder
+if not %mod10% == none xcopy /e /q /h /r /y /i /c ".minecraft\modzips\%mod10%\*" .minecraft\jarfolder
 rmdir /s /q ".minecraft\modzips\%mod1%"
 rmdir /s /q ".minecraft\modzips\%mod2%"
 rmdir /s /q ".minecraft\modzips\%mod3%"
