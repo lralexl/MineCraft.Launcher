@@ -7,8 +7,8 @@ REM  Copyrights: RaLeX
 REM  Trademarks: 
 REM  Originalname: 
 REM  Comments: 
-REM  Productversion: 01.12.00.00
-REM  Fileversion: 01.12.00.00
+REM  Productversion: 01.15.00.00
+REM  Fileversion: 01.15.00.00
 REM  Internalname: 
 REM  Appicon: Z:\games\MineCraft\launcher\includes\icon.ico
 REM  Embeddedfile: Z:\games\MineCraft\launcher\includes\7za.exe
@@ -177,7 +177,7 @@ goto texturesinstall
 :: Install modpack if not installed but enabled
 if not %modpack% == 1 goto texturesupdate
 if exist .minecraft\mods.ver goto modsupdate
-start /wait %MYFILES%\wget.exe -O%mcver%-mods.7z http://dl.dropbox.com/u/18669020/Launcher/%mcver%-mods.7z --no-check-certificate>CON
+start /wait %MYFILES%\wget.exe http://dl.dropbox.com/u/18669020/Launcher/%mcver%-mods.7z --no-check-certificate>CON
 if exist %mcver%-mods.7z start /wait %MYFILES%\wget.exe -O.minecraft\mods.ver http://dl.dropbox.com/u/18669020/Launcher/mods.ver --no-check-certificate
 start /wait %MYFILES%\7za.exe x -y -o.minecraft %mcver%-mods.7z
 del /f /q %mcver%-mods.7z
@@ -192,7 +192,11 @@ set /p modscurrentver=<mods.ver
 set /p modslocalver=<.minecraft\mods.ver
 if %modscurrentver% == %modslocalver% del /f /q mods.ver
 if %modscurrentver% == %modslocalver% goto texturesinstall
-start /wait %MYFILES%\wget.exe -O%mcver%-update.7z http://dl.dropbox.com/u/18669020/Launcher/%mcver%-update.7z --no-check-certificate>CON
+start /wait %MYFILES%\wget.exe http://dl.dropbox.com/u/18669020/Launcher/%mcver%-update.7z --no-check-certificate>CON
+if exist %mcver%-update.7z del /f /q .minecraft\mods\*.zip
+if exist %mcver%-update.7z del /f /q .minecraft\mods\*.litemod
+if exist %mcver%-update.7z del /f /q .minecraft\mods\*.jar
+if exist %mcver%-update.7z del /f /q .minecraft\coremods\*.jar
 start /wait %MYFILES%\7za.exe x -y -o.minecraft %mcver%-update.7z
 del /f /q %mcver%-update.7z
 del /f /q mods.ver
@@ -314,21 +318,21 @@ if %nologin% == 1 goto nologin
 goto mcram
 
 :nologin
-%javap% -Xms%Xms%M -Xmx%Xmx%M -cp "%appdata%\.minecraft\bin\minecraft.jar";"%appdata%\.minecraft\bin\lwjgl.jar";"%appdata%\.minecraft\bin\lwjgl_util.jar";"%appdata%\.minecraft\bin\jinput.jar" -Djava.library.path="%appdata%\.minecraft\bin\natives" net.minecraft.client.Minecraft
+%javap% -Xms%Xms%M -Xmx%Xmx%M -XX:+UseFastAccessorMethods -XX:+AggressiveOpts -XX:+DisableExplicitGC -XX:+UseAdaptiveGCBoundary -XX:MaxGCPauseMillis=500 -XX:SurvivorRatio=16 -XX:+UseParallelGC -XX:UseSSE=3 -XX:ParallelGCThreads=2 -cp "%appdata%\.minecraft\bin\minecraft.jar";"%appdata%\.minecraft\bin\lwjgl.jar";"%appdata%\.minecraft\bin\lwjgl_util.jar";"%appdata%\.minecraft\bin\jinput.jar" -Djava.library.path="%appdata%\.minecraft\bin\natives" net.minecraft.client.Minecraft
 if %ramdisk% == 1 goto ramclean
 
 :mc
 if %autologin% == 0 set user=
 if %autologin% == 0 set pass=
 if %autologin% == 0 set serverset=
-%javap% %proxyargs% -Xms%Xms%M -Xmx%Xmx%M -jar "%appdata%\.minecraft\minecraft.jar" %user% %pass% %serverset%
+%javap% %proxyargs% -Xms%Xms%M -Xmx%Xmx%M -XX:+UseFastAccessorMethods -XX:+AggressiveOpts -XX:+DisableExplicitGC -XX:+UseAdaptiveGCBoundary -XX:MaxGCPauseMillis=500 -XX:SurvivorRatio=16 -XX:+UseParallelGC -XX:UseSSE=3 -XX:ParallelGCThreads=2 -jar "%appdata%\.minecraft\minecraft.jar" %user% %pass% %serverset%
 goto end
 
 :mcram
 if %autologin% == 0 set user=
 if %autologin% == 0 set pass=
 if %autologin% == 0 set serverset=
-%javap% %proxyargs% -Xms%Xms%M -Xmx%Xmx%M -jar "%appdata%\.minecraft\minecraft.jar" %user% %pass% %serverset%
+%javap% %proxyargs% -Xms%Xms%M -Xmx%Xmx%M -XX:+UseFastAccessorMethods -XX:+AggressiveOpts -XX:+DisableExplicitGC -XX:+UseAdaptiveGCBoundary -XX:MaxGCPauseMillis=500 -XX:SurvivorRatio=16 -XX:+UseParallelGC -XX:UseSSE=3 -XX:ParallelGCThreads=2 -jar "%appdata%\.minecraft\minecraft.jar" %user% %pass% %serverset%
 
 :ramclean
 if not %persist% == 1 goto ramdiskclean
