@@ -370,6 +370,5 @@ set watext=Files/Folders have been created for first launch. Configure settings.
 start /wait %MYFILES%\WizApp.exe MB
 
 :end
-if exist Dropbox rmdir /s /q Dropbox
 rmdir /s /q %MYFILES%
 goto infinity
